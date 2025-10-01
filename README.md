@@ -11,12 +11,6 @@ make health         # quick ping
 make curl           # exercise all endpoints
 ```
 
-If port 8080 is taken:
-```bash
-PORT=8081 ./bin/server
-curl http://localhost:8081/healthz
-```
-
 ## API Endpoints
 - GET `/healthz` – Health check
 - POST `/v1/presign/upload` – Mock upload URL
