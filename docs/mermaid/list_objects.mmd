@@ -8,7 +8,7 @@ sequenceDiagram
   Client->>API: POST /v1/list { tenant_id, prefix, limit, marker }
   API->>Auth: Validate token → (tenant_id, role)
   Auth-->>API: OK (role permits list)
-  API->>API: Build Prefix tenants/<tenant_id>/<prefix>
+  API->>API: Build Prefix tenants/&lt;tenant_id&gt;/&lt;prefix&gt;
   API->>S3: ListObjectsV2(Prefix, MaxKeys, ContinuationToken)
   S3-->>API: { Contents[], NextContinuationToken, IsTruncated }
   API-->>Client: 200 { objects[], next_marker, truncated }

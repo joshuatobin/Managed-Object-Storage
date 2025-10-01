@@ -8,7 +8,7 @@ sequenceDiagram
   Client->>API: POST /v1/presign/download { tenant_id, object_key }
   API->>Auth: Validate token → (tenant_id, role)
   Auth-->>API: OK (role permits GET/HEAD)
-  API->>API: Normalize/validate key → tenants/<tenant_id>/<object_key>
+  API->>API: Normalize/validate key → tenants/&lt;tenant_id&gt;/&lt;object_key&gt;
   API->>S3: Generate presigned GET URL (TTL ≤ 10m)
   S3-->>API: { url, expires_at }
   API-->>Client: 200 { url, expires_at }

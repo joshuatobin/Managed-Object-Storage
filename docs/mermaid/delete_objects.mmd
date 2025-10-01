@@ -8,7 +8,7 @@ sequenceDiagram
   Client->>API: POST /v1/delete { tenant_id, object_keys[] }
   API->>Auth: Validate token → (tenant_id, role)
   Auth-->>API: OK (role permits delete)
-  API->>API: Validate each key; map to tenants/<tenant_id>/<key>
+  API->>API: Validate each key; map to tenants/&lt;tenant_id&gt;/&lt;key&gt;
   API->>S3: DeleteObjects(Identifiers[])
   S3-->>API: { Deleted[], Errors[] }
   API-->>Client: 200 { deleted[], errors[] }
