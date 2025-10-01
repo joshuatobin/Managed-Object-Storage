@@ -24,7 +24,7 @@ curl http://localhost:8081/healthz
 - POST `/v1/list` – Mock object listing
 - POST `/v1/delete` – Mock delete
 
-## Demo Scope (Important)
+## Demo Scope
 - This is a mock control-plane: no AWS calls, no auth. Responses are deterministic for demo/testing.
 - Basic input validation and tenant-scoped key formatting mirror the ADR.
 
@@ -34,12 +34,12 @@ curl http://localhost:8081/healthz
 - Keep dependencies minimal for a reliable live demo.
 
 ## Considerations, decisions, assumptions
-- Decision: Single bucket + tenant prefixes and presigned URLs (mocked here) per ADR MVP.
+- Decision: Single bucket + tenant prefixes and presigned URLs (mocked) per ADR MVP.
 - Assumption: AuthN/Z (tenant/role) is out-of-scope for the mock; would be enforced before presign in production.
 - Consideration: Responses mimic S3 presigned query params and TTLs to ease client integration later.
 - Non-goals (here): No AWS SDK/KMS/ACLs/RBAC; focused on API contract only.
 
-## Next improvements and likely challenges
+## V2 improvements 
 - Replace mocks with real S3 presign/list/delete
   - Challenge: IAM least-privilege, SSE-KMS, VPC endpoints, retries, error surfaces.
 - Add AuthN/Z (tokens or OIDC → `reader|writer|admin`)
