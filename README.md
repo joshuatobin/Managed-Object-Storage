@@ -10,6 +10,7 @@ make run            # starts on :8080
 make health         # quick ping
 make curl           # exercise all endpoints
 ```
+- Source: docs/mermaid/presign_upload.mmd
 
 ## API Endpoints
 - GET `/healthz` – Health check
@@ -56,81 +57,5 @@ make curl           # exercise all endpoints
 ## Note
 This is a mock implementation for MVP demo purposes. It returns fake URLs/data and does not contact AWS.
 
-## Docs
-
-## Workflows
-
-```mermaid
-sequenceDiagram
-  autonumber
-  participant Client
-  participant API as Control-Plane API
-  participant Auth as AuthNZ
-  participant S3 as S3 (bucket)
-
-  Client->>API: POST /v1/presign/upload {tenant_id, object_key, content_type, max_size}
-  API->>Auth: Validate token -> (tenant_id, role)
-  Auth-->>API: OK (role permits PUT)
-  API->>API: Normalize and validate key: tenants/TENANT_ID/OBJECT_KEY
-  API->>S3: Generate presigned PUT URL (TTL <= 10m)
-  S3-->>API: {url, headers, expires_at}
-  API-->>Client: 200 {url, method: PUT, headers, expires_at}
-```
-
-```mermaid
-sequenceDiagram
-  autonumber
-  participant Client
-  participant API as Control-Plane API
-  participant Auth as AuthNZ
-  participant S3 as S3 (bucket)
-
-  Client->>API: POST /v1/presign/download {tenant_id, object_key}
-  API->>Auth: Validate token -> (tenant_id, role)
-  Auth-->>API: OK (role permits GET/HEAD)
-  API->>API: Normalize and validate key: tenants/TENANT_ID/OBJECT_KEY
-  API->>S3: Generate presigned GET URL (TTL <= 10m)
-  S3-->>API: {url, expires_at}
-  API-->>Client: 200 {url, expires_at}
-```
-
-```mermaid
-sequenceDiagram
-  autonumber
-  participant Client
-  participant API as Control-Plane API
-  participant Auth as AuthNZ
-  participant S3 as S3 (bucket)
-
-  Client->>API: POST /v1/list {tenant_id, prefix, limit, marker}
-  API->>Auth: Validate token -> (tenant_id, role)
-  Auth-->>API: OK (role permits list)
-  API->>API: Build prefix: tenants/TENANT_ID/PREFIX
-  API->>S3: ListObjectsV2(Prefix, MaxKeys, ContinuationToken)
-  S3-->>API: {Contents[], NextContinuationToken, IsTruncated}
-  API-->>Client: 200 {objects[], next_marker, truncated}
-```
-
-```mermaid
-sequenceDiagram
-  autonumber
-  participant Client
-  participant API as Control-Plane API
-  participant Auth as AuthNZ
-  participant S3 as S3 (bucket)
-
-  Client->>API: POST /v1/delete {tenant_id, object_keys[]}
-  API->>Auth: Validate token -> (tenant_id, role)
-  Auth-->>API: OK (role permits delete)
-  API->>API: Validate keys and map to tenants/TENANT_ID/KEY
-  API->>S3: DeleteObjects(Identifiers[])
-  S3-->>API: {Deleted[], Errors[]}
-  API-->>Client: 200 {deleted[], errors[]}
-```
-- Mermaid workflows (source):
-  - docs/mermaid/presign_upload.mmd
-  - docs/mermaid/presign_download.mmd
-  - docs/mermaid/list_objects.mmd
-  - docs/mermaid/delete_objects.mmd
-
+## Workflows (inline)
 To preview, use a Mermaid-capable Markdown viewer or `@mermaid-js/mermaid-cli`.
