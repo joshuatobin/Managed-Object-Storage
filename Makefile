@@ -24,7 +24,7 @@ deps:
 curl:
 	@echo "=== Testing Health Check ==="
 	@curl -s http://localhost:8080/healthz
-	@echo -e "\n"
+	@printf "\n"
 	@echo "=== Testing Presign Upload ==="
 	@curl -s -X POST http://localhost:8080/v1/presign/upload \
 		-H "Content-Type: application/json" \
@@ -51,4 +51,4 @@ curl:
 health:
 	@echo "=== Health Check ==="
 	@curl -s http://localhost:8080/healthz
-	@echo -e "\n"
+	@printf "\n"
