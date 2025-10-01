@@ -1,0 +1,16 @@
+sequenceDiagram
+  autonumber
+  participant Client
+  participant API as Control‑Plane API
+  participant Auth as AuthN/Z
+  participant S3 as S3 (bucket)
+
+  Client->>API: POST /v1/presign/download { tenant_id, object_key }
+  API->>Auth: Validate token → (tenant_id, role)
+  Auth-->>API: OK (role permits GET/HEAD)
+  API->>API: Normalize/validate key → tenants/<tenant_id>/<object_key>
+  API->>S3: Generate presigned GET URL (TTL ≤ 10m)
+  S3-->>API: { url, expires_at }
+  API-->>Client: 200 { url, expires_at }
+
+  Note over Client,S3: Client downloads directly from S3 using the presigned URL

@@ -1,0 +1,14 @@
+sequenceDiagram
+  autonumber
+  participant Client
+  participant API as Control‑Plane API
+  participant Auth as AuthN/Z
+  participant S3 as S3 (bucket)
+
+  Client->>API: POST /v1/delete { tenant_id, object_keys[] }
+  API->>Auth: Validate token → (tenant_id, role)
+  Auth-->>API: OK (role permits delete)
+  API->>API: Validate each key; map to tenants/<tenant_id>/<key>
+  API->>S3: DeleteObjects(Identifiers[])
+  S3-->>API: { Deleted[], Errors[] }
+  API-->>Client: 200 { deleted[], errors[] }

@@ -55,3 +55,12 @@ make curl           # exercise all endpoints
 
 ## Note
 This is a mock implementation for MVP demo purposes. It returns fake URLs/data and does not contact AWS.
+
+## Docs
+- Mermaid workflows (source):
+  - docs/mermaid/presign_upload.mmd
+  - docs/mermaid/presign_download.mmd
+  - docs/mermaid/list_objects.mmd
+  - docs/mermaid/delete_objects.mmd
+
+To preview, use a Mermaid-capable Markdown viewer or `@mermaid-js/mermaid-cli`.
