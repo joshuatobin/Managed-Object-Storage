@@ -10,7 +10,6 @@ make run            # starts on :8080
 make health         # quick ping
 make curl           # exercise all endpoints
 ```
-- Source: docs/mermaid/presign_upload.mmd
 
 ## API Endpoints
 - GET `/healthz` – Health check
